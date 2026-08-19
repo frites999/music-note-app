@@ -49,9 +49,6 @@ const menuButton =
 const nextButton =
   document.getElementById("next-button");
 
-const clefTitle =
-  document.getElementById("clef-title");
-
 const clefSymbol =
   document.getElementById("clef-symbol");
 
@@ -83,63 +80,60 @@ let locked = false;
 
 let totalQuestions = EASY_QUESTIONS;
 
+let questionList = [];
+
 
 /* =================================
    音の一覧
 
-   答えボタンは常にこの8種類
+   step
+   0 = 低いど
+   1 = れ
+   2 = み
+   3 = ふぁ
+   4 = そ
+   5 = ら
+   6 = し
+   7 = 高いど
+
+   回答ボタンは
+   ど れ み ふぁ そ ら し ど
 ================================= */
 
 const NOTES = [
-
   {
     answer: "ど",
     step: 0
   },
-
   {
     answer: "れ",
     step: 1
   },
-
   {
     answer: "み",
     step: 2
   },
-
   {
     answer: "ふぁ",
     step: 3
   },
-
   {
     answer: "そ",
     step: 4
   },
-
   {
     answer: "ら",
     step: 5
   },
-
   {
     answer: "し",
     step: 6
   },
-
   {
     answer: "ど",
     step: 7
   }
-
 ];
-
-
-/* =================================
-   現在の問題リスト
-================================= */
-
-let questionList = [];
 
 
 /* =================================
@@ -224,9 +218,7 @@ function startGame(
      問題数
   -------------------------------- */
 
-  if (
-    level === "hard"
-  ) {
+  if (level === "hard") {
 
     totalQuestions =
       HARD_QUESTIONS;
@@ -240,15 +232,13 @@ function startGame(
 
 
   /* --------------------------------
-     問題を作る
+     問題リスト
   -------------------------------- */
 
-  if (
-    level === "hard"
-  ) {
+  if (level === "hard") {
 
     /*
-      むずかしい：
+      むずかしい
 
       8種類の音から
       ランダムに10問
@@ -268,7 +258,6 @@ function startGame(
           NOTES.length
         );
 
-
       questionList.push(
         NOTES[randomIndex]
       );
@@ -278,9 +267,23 @@ function startGame(
   } else {
 
     /*
-      かんたん：
+      かんたん
 
-      ど → れ → み → ...
+      低いど
+      ↓
+      れ
+      ↓
+      み
+      ↓
+      ふぁ
+      ↓
+      そ
+      ↓
+      ら
+      ↓
+      し
+      ↓
+      高いど
     */
 
     questionList =
@@ -313,26 +316,17 @@ function startGame(
 
   /* --------------------------------
      音部記号
+
+     五線譜の中だけに表示する。
+     メニューやヘッダーには表示しない。
   -------------------------------- */
 
-  if (
-    clef === "treble"
-  ) {
-
-    clefTitle.textContent =
-      level === "hard"
-        ? "とおんきごう・むずかしい"
-        : "とおんきごう";
+  if (clef === "treble") {
 
     clefSymbol.textContent =
       "𝄞";
 
   } else {
-
-    clefTitle.textContent =
-      level === "hard"
-        ? "へおんきごう・むずかしい"
-        : "へおんきごう";
 
     clefSymbol.textContent =
       "𝄢";
@@ -350,6 +344,10 @@ function startGame(
 
 function showNextQuestion() {
 
+  /* --------------------------------
+     全問終了
+  -------------------------------- */
+
   if (
     questionNumber >=
     totalQuestions
@@ -360,6 +358,10 @@ function showNextQuestion() {
     return;
   }
 
+
+  /* --------------------------------
+     現在の問題
+  -------------------------------- */
 
   currentQuestion =
     questionList[
@@ -372,27 +374,46 @@ function showNextQuestion() {
   locked = false;
 
 
+  /* --------------------------------
+     メッセージ
+  -------------------------------- */
+
   messageEl.textContent =
     "";
 
+
+  /* --------------------------------
+     つぎへボタンを隠す
+  -------------------------------- */
 
   nextButton.classList.add(
     "hidden"
   );
 
 
+  /* --------------------------------
+     進行・スコア
+  -------------------------------- */
+
   progressEl.textContent =
     `${questionNumber} / ${totalQuestions}`;
-
 
   scoreEl.textContent =
     `⭐ ${score}`;
 
 
+  /* --------------------------------
+     音符を描く
+  -------------------------------- */
+
   drawNote(
     currentQuestion.step
   );
 
+
+  /* --------------------------------
+     解答ボタン
+  -------------------------------- */
 
   renderAnswers();
 }
@@ -409,7 +430,7 @@ function drawNote(step) {
 
   /* =================================
      とおんきごう
-  ================================= */
+================================= */
 
   if (
     currentClef ===
@@ -419,19 +440,19 @@ function drawNote(step) {
     /*
       とおんきごう
 
-      ど       = 加線
-      れ       = 加線と第1線の間
-      み       = 第1線
-      ふぁ     = 第1間
-      そ       = 第2線
-      ら       = 第2間
-      し       = 第3線
-      ど       = 第3間
+      低いど       = 加線
+      れ           = 加線と第1線の間
+      み           = 第1線
+      ふぁ         = 第1間
+      そ           = 第2線
+      ら           = 第2間
+      し           = 第3線
+      高いど       = 第3間
     */
 
     const treblePositions = [
 
-      205,     // ど
+      205,     // 低いど
       192.5,   // れ
       180,     // み
       167.5,   // ふぁ
@@ -489,7 +510,7 @@ function drawNote(step) {
 
 
     /* --------------------------------
-       とおんきごうの棒
+       ト音記号の棒
 
        上向き
     -------------------------------- */
@@ -526,19 +547,19 @@ function drawNote(step) {
     /*
       へおんきごう
 
-      ど       = 142.5
-      れ       = 130
-      み       = 117.5
-      ふぁ     = 105
-      そ       = 92.5
-      ら       = 80
-      し       = 67.5
-      高いど   = 55 ＋ 加線
+      低いど       = 下から2番目と3番目の線の間
+      れ           = 第2線
+      み           = 第2間
+      ふぁ         = 第3線
+      そ           = 第3間
+      ら           = 第4線
+      し           = 第4間
+      高いど       = 第5線の上＋加線
     */
 
     const bassPositions = [
 
-      142.5,   // ど
+      142.5,   // 低いど
       130,     // れ
       117.5,   // み
       105,     // ふぁ
@@ -596,7 +617,7 @@ function drawNote(step) {
 
 
     /* --------------------------------
-       へおんきごうの棒
+       へ音記号の棒
 
        下向き
     -------------------------------- */
@@ -637,12 +658,11 @@ function drawNote(step) {
     "cy",
     y
   );
-
 }
 
 
 /* =================================
-   回答ボタン
+   解答ボタンを作る
 ================================= */
 
 function renderAnswers() {
@@ -652,8 +672,7 @@ function renderAnswers() {
 
 
   /*
-    むずかしい場合も
-    ボタンは同じ。
+    常に8個
 
     ど
     れ
@@ -682,6 +701,21 @@ function renderAnswers() {
         note.answer;
 
 
+      /*
+        同じ「ど」が2つあるので、
+        stepを保存しておく
+      */
+
+      button.dataset.step =
+        note.step;
+
+
+      button.setAttribute(
+        "aria-label",
+        note.answer
+      );
+
+
       button.addEventListener(
         "click",
         () => {
@@ -701,7 +735,6 @@ function renderAnswers() {
 
     }
   );
-
 }
 
 
@@ -722,12 +755,14 @@ function checkAnswer(
   locked = true;
 
 
-  const buttons = [
+  /* --------------------------------
+     全ボタンを押せなくする
+  -------------------------------- */
 
+  const buttons = [
     ...document.querySelectorAll(
       ".answer-button"
     )
-
   ];
 
 
@@ -765,6 +800,10 @@ function checkAnswer(
       `⭐ ${score}`;
 
 
+    /*
+      正解なら自動で次へ
+    */
+
     setTimeout(
       showNextQuestion,
       900
@@ -790,25 +829,18 @@ function checkAnswer(
 
     /*
       同じ「ど」が2つあるため、
-      stepで正しいボタンを探す。
+      stepで正解ボタンを探す
     */
 
     const correctButton =
       buttons.find(
         (btn) =>
-          btn.textContent ===
-          currentQuestion.answer
+          Number(
+            btn.dataset.step
+          ) ===
+          currentQuestion.step
       );
 
-
-    /*
-      「ど」が2つあるので、
-      現在の問題のstepに
-      対応するボタンを正解にする。
-
-      ただし表示上は同じ「ど」なので、
-      どちらを押しても正解にする。
-    */
 
     if (correctButton) {
 
@@ -821,15 +853,13 @@ function checkAnswer(
 
     /*
       間違えた場合は
-      「つぎへ」
+      「つぎへ」ボタンを表示
     */
 
     nextButton.classList.remove(
       "hidden"
     );
-
   }
-
 }
 
 
@@ -853,6 +883,10 @@ function showResult() {
     `${score} / ${totalQuestions}`;
 
 
+  /* --------------------------------
+     メッセージ
+  -------------------------------- */
+
   if (
     score ===
     totalQuestions
@@ -865,7 +899,9 @@ function showResult() {
 
   else if (
     score >=
-    Math.ceil(totalQuestions * 0.7)
+    Math.ceil(
+      totalQuestions * 0.7
+    )
   ) {
 
     resultTextEl.textContent =
@@ -875,7 +911,9 @@ function showResult() {
 
   else if (
     score >=
-    Math.ceil(totalQuestions * 0.4)
+    Math.ceil(
+      totalQuestions * 0.4
+    )
   ) {
 
     resultTextEl.textContent =
@@ -889,7 +927,6 @@ function showResult() {
       "れんしゅう おつかれさま！ またやってみよう！";
 
   }
-
 }
 
 
@@ -921,5 +958,4 @@ function showMenu() {
   nextButton.classList.add(
     "hidden"
   );
-
 }

@@ -91,38 +91,47 @@ let locked = false;
 ================================= */
 
 const NOTES = [
+
   {
     answer: "ど",
     step: 0
   },
+
   {
     answer: "れ",
     step: 1
   },
+
   {
     answer: "み",
     step: 2
   },
+
   {
     answer: "ふぁ",
     step: 3
   },
+
   {
     answer: "そ",
     step: 4
   },
+
   {
     answer: "ら",
     step: 5
   },
+
   {
     answer: "し",
     step: 6
   },
+
   {
     answer: "ど",
     step: 7
   }
+
 ];
 
 
@@ -345,6 +354,64 @@ function drawNote(step) {
     y =
       treblePositions[step];
 
+
+    /* --------------------------------
+       とおんきごうの低い「ど」
+
+       加線を表示
+    -------------------------------- */
+
+    if (step === 0) {
+
+      ledgerLine.classList.remove(
+        "hidden"
+      );
+
+      ledgerLine.setAttribute(
+        "y1",
+        205
+      );
+
+      ledgerLine.setAttribute(
+        "y2",
+        205
+      );
+
+    } else {
+
+      ledgerLine.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    /* --------------------------------
+       とおんきごうの棒
+
+       上向き
+    -------------------------------- */
+
+    noteStem.setAttribute(
+      "x1",
+      376
+    );
+
+    noteStem.setAttribute(
+      "x2",
+      376
+    );
+
+    noteStem.setAttribute(
+      "y1",
+      y
+    );
+
+    noteStem.setAttribute(
+      "y2",
+      y - 75
+    );
+
   }
 
 
@@ -357,22 +424,17 @@ function drawNote(step) {
     /*
       へおんきごう
 
-      今回は、ユーザー指定の位置。
+      ど       = 142.5
+      れ       = 130
+      み       = 117.5
+      ふぁ     = 105
+      そ       = 92.5
+      ら       = 80
+      し       = 67.5
+      ど       = 55
 
-      ど       = 下から2番目と
-                 3番目の線の間
-                 （ト音記号の「ら」と同じ高さ）
-
-      れ       = その1段上
-      み       = さらに1段上
-      ふぁ     = さらに1段上
-      そ       = さらに1段上
-      ら       = さらに1段上
-      し       = さらに1段上
-      ど       = さらに1段上
-
-      音が高くなるほど
-      画面上で上へ移動する。
+      高い「ど」は五線の上なので
+      加線を1本つける。
     */
 
     const bassPositions = [
@@ -399,44 +461,72 @@ function drawNote(step) {
     y =
       bassPositions[step];
 
-  }
+
+    /* --------------------------------
+       へおんきごうの加線
+
+       高い「ど」だけ
+    -------------------------------- */
+
+    if (step === 7) {
+
+      ledgerLine.classList.remove(
+        "hidden"
+      );
+
+      ledgerLine.setAttribute(
+        "x1",
+        335
+      );
+
+      ledgerLine.setAttribute(
+        "x2",
+        385
+      );
+
+      ledgerLine.setAttribute(
+        "y1",
+        55
+      );
+
+      ledgerLine.setAttribute(
+        "y2",
+        55
+      );
+
+    } else {
+
+      ledgerLine.classList.add(
+        "hidden"
+      );
+
+    }
 
 
-  /* =================================
-     加線
+    /* --------------------------------
+       へおんきごうの棒
 
-     とおんきごうの低い「ど」
-     だけ表示。
+       下向き
+    -------------------------------- */
 
-     へおんきごうの「ど」は
-     五線内なので加線なし。
-  ================================= */
-
-  if (
-    currentClef === "treble" &&
-    step === 0
-  ) {
-
-    ledgerLine.classList.remove(
-      "hidden"
+    noteStem.setAttribute(
+      "x1",
+      344
     );
 
+    noteStem.setAttribute(
+      "x2",
+      344
+    );
 
-    ledgerLine.setAttribute(
+    noteStem.setAttribute(
       "y1",
-      205
+      y
     );
 
-
-    ledgerLine.setAttribute(
+    noteStem.setAttribute(
       "y2",
-      205
-    );
-
-  } else {
-
-    ledgerLine.classList.add(
-      "hidden"
+      y + 75
     );
 
   }
@@ -446,34 +536,33 @@ function drawNote(step) {
      音符の頭
   ================================= */
 
+  if (
+    currentClef === "treble"
+  ) {
+
+    noteHead.setAttribute(
+      "cx",
+      360
+    );
+
+  } else {
+
+    /*
+      棒を左側につけるため、
+      音符の位置を少し右にする。
+    */
+
+    noteHead.setAttribute(
+      "cx",
+      360
+    );
+
+  }
+
+
   noteHead.setAttribute(
     "cy",
     y
-  );
-
-
-  /* =================================
-     音符の棒
-  ================================= */
-
-  noteStem.setAttribute(
-    "x1",
-    376
-  );
-
-  noteStem.setAttribute(
-    "x2",
-    376
-  );
-
-  noteStem.setAttribute(
-    "y1",
-    y
-  );
-
-  noteStem.setAttribute(
-    "y2",
-    y - 75
   );
 
 }
@@ -547,9 +636,11 @@ function checkAnswer(
 
 
   const buttons = [
+
     ...document.querySelectorAll(
       ".answer-button"
     )
+
   ];
 
 
@@ -624,11 +715,6 @@ function checkAnswer(
 
     }
 
-
-    /*
-      間違えたときは
-      「つぎへ」を押す
-    */
 
     nextButton.classList.remove(
       "hidden"

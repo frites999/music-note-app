@@ -54,55 +54,57 @@
            とおんきごう
       ================================== -->
 
-      <h2>
-        とおんきごう
-      </h2>
+      <div class="clef-section">
 
-
-      <!-- かんたん -->
-
-      <button
-        class="clef-button treble"
-        data-clef="treble"
-        data-level="easy"
-      >
-
-        <span class="clef-symbol">
-          𝄞
-        </span>
-
-        <span class="clef-name">
+        <h2>
           とおんきごう
-        </span>
-
-        <small>
-          かんたん
-        </small>
-
-      </button>
+        </h2>
 
 
-      <!-- むずかしい -->
+        <div class="clef-buttons">
 
-      <button
-        class="clef-button treble"
-        data-clef="treble"
-        data-level="hard"
-      >
 
-        <span class="clef-symbol">
-          𝄞
-        </span>
+          <!-- かんたん -->
 
-        <span class="clef-name">
-          とおんきごう
-        </span>
+          <button
+            class="clef-button treble"
+            data-clef="treble"
+            data-level="easy"
+          >
 
-        <small>
-          むずかしい
-        </small>
+            <span class="clef-symbol">
+              𝄞
+            </span>
 
-      </button>
+            <span class="clef-level">
+              かんたん
+            </span>
+
+          </button>
+
+
+          <!-- むずかしい -->
+
+          <button
+            class="clef-button treble"
+            data-clef="treble"
+            data-level="hard"
+          >
+
+            <span class="clef-symbol">
+              𝄞
+            </span>
+
+            <span class="clef-level">
+              むずかしい
+            </span>
+
+          </button>
+
+
+        </div>
+
+      </div>
 
 
 
@@ -110,62 +112,65 @@
            へおんきごう
       ================================== -->
 
-      <h2>
-        へおんきごう
-      </h2>
+      <div class="clef-section">
 
-
-      <!-- かんたん -->
-
-      <button
-        class="clef-button bass"
-        data-clef="bass"
-        data-level="easy"
-      >
-
-        <span class="clef-symbol">
-          𝄢
-        </span>
-
-        <span class="clef-name">
+        <h2>
           へおんきごう
-        </span>
-
-        <small>
-          かんたん
-        </small>
-
-      </button>
+        </h2>
 
 
-      <!-- むずかしい -->
+        <div class="clef-buttons">
 
-      <button
-        class="clef-button bass"
-        data-clef="bass"
-        data-level="hard"
-      >
 
-        <span class="clef-symbol">
-          𝄢
-        </span>
+          <!-- かんたん -->
 
-        <span class="clef-name">
-          へおんきごう
-        </span>
+          <button
+            class="clef-button bass"
+            data-clef="bass"
+            data-level="easy"
+          >
 
-        <small>
-          むずかしい
-        </small>
+            <span class="clef-symbol">
+              𝄢
+            </span>
 
-      </button>
+            <span class="clef-level">
+              かんたん
+            </span>
+
+          </button>
+
+
+          <!-- むずかしい -->
+
+          <button
+            class="clef-button bass"
+            data-clef="bass"
+            data-level="hard"
+          >
+
+            <span class="clef-symbol">
+              𝄢
+            </span>
+
+            <span class="clef-level">
+              むずかしい
+            </span>
+
+          </button>
+
+
+        </div>
+
+      </div>
+
 
     </section>
 
 
 
     <!-- =================================
-         クイズ
+         クイズ画面
     ================================== -->
 
     <section
@@ -174,9 +179,9 @@
     >
 
 
-      <!-- ---------------------------------
+      <!-- =================================
            上部
-      ---------------------------------- -->
+      ================================== -->
 
       <div class="quiz-top">
 
@@ -184,34 +189,48 @@
         <button
           id="back-button"
           class="small-button"
+          type="button"
         >
           ← もどる
         </button>
 
 
-        <div id="progress">
+        <div
+          id="progress"
+          class="progress"
+        >
           1 / 8
         </div>
 
 
-        <div id="score">
+        <div
+          id="score"
+          class="score"
+        >
           ⭐ 0
         </div>
+
 
       </div>
 
 
 
-      <!-- ---------------------------------
+      <!-- =================================
            問題カード
-      ---------------------------------- -->
+      ================================== -->
 
       <div class="question-card">
 
 
-        <div id="clef-title">
+        <!-- 音部記号の名前 -->
+
+        <div
+          id="clef-title"
+          class="clef-title"
+        >
           とおんきごう
         </div>
+
 
 
         <!-- =================================
@@ -273,6 +292,7 @@
             />
 
 
+
             <!-- ---------------------------------
                  音部記号
             ---------------------------------- -->
@@ -281,7 +301,9 @@
               id="clef-symbol"
               x="70"
               y="160"
-            ></text>
+            >
+            </text>
+
 
 
             <!-- ---------------------------------
@@ -319,7 +341,8 @@
                 cy="130"
                 rx="17"
                 ry="12"
-              ></ellipse>
+              >
+              </ellipse>
 
 
               <!-- 音符の棒 -->
@@ -332,11 +355,13 @@
                 y2="55"
               />
 
+
             </g>
 
           </svg>
 
         </div>
+
 
 
         <!-- ---------------------------------
@@ -359,29 +384,34 @@
       <div
         id="answers"
         class="answers"
-      ></div>
+      >
+      </div>
 
 
 
       <!-- =================================
-           メッセージ
+           正解・不正解メッセージ
       ================================== -->
 
       <div
         id="message"
         class="message"
         aria-live="polite"
-      ></div>
+      >
+      </div>
 
 
 
       <!-- =================================
            つぎへボタン
+
+           間違えたときだけ表示
       ================================== -->
 
       <button
         id="next-button"
         class="next-button hidden"
+        type="button"
       >
         つぎへ →
       </button>
@@ -392,7 +422,7 @@
 
 
     <!-- =================================
-         結果
+         結果画面
     ================================== -->
 
     <section
@@ -426,6 +456,7 @@
         </div>
 
 
+
         <!-- ---------------------------------
              もう一度
         ---------------------------------- -->
@@ -433,18 +464,21 @@
         <button
           id="again-button"
           class="main-button"
+          type="button"
         >
           もういちど！
         </button>
 
 
+
         <!-- ---------------------------------
-             メニュー
+             メニューへ
         ---------------------------------- -->
 
         <button
           id="menu-button"
           class="secondary-button"
+          type="button"
         >
           メニューへ
         </button>
@@ -458,11 +492,13 @@
   </main>
 
 
+
   <!-- =================================
        JavaScript
   ================================== -->
 
   <script src="app.js"></script>
+
 
 </body>
 

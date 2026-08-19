@@ -826,3 +826,38 @@ h2 {
   }
 
 }
+/* =================================
+   音階選択ボタン
+   小さめに戻す
+================================= */
+
+.answers {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.answer-button {
+  min-height: 64px;
+  border: 0;
+  border-radius: 16px;
+  background: white;
+  font-size: 28px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+.answer-button:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+.answer-button.correct {
+  background: #b9efc2;
+}
+
+.answer-button.wrong {
+  background: #ffc7c7;
+}

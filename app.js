@@ -1,13 +1,30 @@
 const TOTAL_QUESTIONS = 8;
 
-const menu = document.getElementById("menu");
-const quiz = document.getElementById("quiz");
-const result = document.getElementById("result");
 
-const answersEl = document.getElementById("answers");
-const messageEl = document.getElementById("message");
-const progressEl = document.getElementById("progress");
-const scoreEl = document.getElementById("score");
+/* ================================
+   HTML要素
+================================ */
+
+const menu =
+  document.getElementById("menu");
+
+const quiz =
+  document.getElementById("quiz");
+
+const result =
+  document.getElementById("result");
+
+const answersEl =
+  document.getElementById("answers");
+
+const messageEl =
+  document.getElementById("message");
+
+const progressEl =
+  document.getElementById("progress");
+
+const scoreEl =
+  document.getElementById("score");
 
 const resultScoreEl =
   document.getElementById("result-score");
@@ -39,83 +56,88 @@ const noteHead =
 const noteStem =
   document.getElementById("note-stem");
 
+const ledgerLine =
+  document.getElementById("ledger-line");
+
+
+/* ================================
+   状態
+================================ */
+
 let currentClef = null;
+
 let currentQuestion = null;
+
 let questionNumber = 0;
+
 let score = 0;
+
 let locked = false;
 
 
-/*
-================================
-音の順番
+/* ================================
+   音の一覧
 
-画面には
+   順番は固定
 
-ど
-れ
-み
-ふぁ
-そ
-ら
-し
-ど
-
-と表示する。
-
-最後の「ど」は高いド。
-================================
-*/
+   ど
+   れ
+   み
+   ふぁ
+   そ
+   ら
+   し
+   ど（高い）
+================================ */
 
 const NOTES = [
+
   {
     answer: "ど",
-    label: "ど",
     step: 0
   },
+
   {
     answer: "れ",
-    label: "れ",
     step: 1
   },
+
   {
     answer: "み",
-    label: "み",
     step: 2
   },
+
   {
     answer: "ふぁ",
-    label: "ふぁ",
     step: 3
   },
+
   {
     answer: "そ",
-    label: "そ",
     step: 4
   },
+
   {
     answer: "ら",
-    label: "ら",
     step: 5
   },
+
   {
     answer: "し",
-    label: "し",
     step: 6
   },
+
   {
     answer: "ど",
-    label: "ど",
     step: 7
   }
+
 ];
 
 
-/*
-================================
-メニュー
-================================
-*/
+/* ================================
+   メニュー
+================================ */
 
 document
   .querySelectorAll(".clef-button")
@@ -135,6 +157,10 @@ document
   });
 
 
+/* ================================
+   ボタン
+================================ */
+
 backButton.addEventListener(
   "click",
   showMenu
@@ -145,7 +171,9 @@ againButton.addEventListener(
   "click",
   () => {
 
-    startGame(currentClef);
+    startGame(
+      currentClef
+    );
 
   }
 );
@@ -163,11 +191,9 @@ nextButton.addEventListener(
 );
 
 
-/*
-================================
-ゲーム開始
-================================
-*/
+/* ================================
+   ゲーム開始
+================================ */
 
 function startGame(clef) {
 
@@ -179,11 +205,19 @@ function startGame(clef) {
 
   locked = false;
 
-  menu.classList.add("hidden");
 
-  result.classList.add("hidden");
+  menu.classList.add(
+    "hidden"
+  );
 
-  quiz.classList.remove("hidden");
+  result.classList.add(
+    "hidden"
+  );
+
+  quiz.classList.remove(
+    "hidden"
+  );
+
 
   nextButton.classList.add(
     "hidden"
@@ -213,31 +247,22 @@ function startGame(clef) {
 }
 
 
-/*
-================================
-次の問題
+/* ================================
+   次の問題
 
-ランダムではなく、
+   ランダムではなく、
 
-ど
-↓
-れ
-↓
-み
-↓
-ふぁ
-↓
-そ
-↓
-ら
-↓
-し
-↓
-ど
+   ど
+   れ
+   み
+   ふぁ
+   そ
+   ら
+   し
+   ど
 
-の順番。
-================================
-*/
+   の順番
+================================ */
 
 function showNextQuestion() {
 
@@ -260,7 +285,10 @@ function showNextQuestion() {
 
   locked = false;
 
-  messageEl.textContent = "";
+
+  messageEl.textContent =
+    "";
+
 
   nextButton.classList.add(
     "hidden"
@@ -280,32 +308,22 @@ function showNextQuestion() {
   );
 
 
-  renderAnswers(
-    currentQuestion
-  );
+  renderAnswers();
 }
 
 
-/*
-================================
-音符の位置
-
-五線譜
-
-第1線 = 180
-第2線 = 155
-第3線 = 130
-第4線 = 105
-第5線 = 80
-
-線と線の間 = 12.5px
-================================
-*/
+/* ================================
+   音符を描く
+================================ */
 
 function drawNote(step) {
 
   let y;
 
+
+  /* --------------------------------
+     ト音記号
+  -------------------------------- */
 
   if (
     currentClef ===
@@ -313,66 +331,132 @@ function drawNote(step) {
   ) {
 
     /*
-    ト音記号
+      ト音記号
 
-    ど       = 第1線の下
-    れ       = 第1線の下の間
-    み       = 第1線
-    ふぁ     = 第1間
-    そ       = 第2線
-    ら       = 第2間
-    し       = 第3線
-    ど       = 第3間
+      ど       = 加線
+      れ       = 加線と第1線の間
+      み       = 第1線
+      ふぁ     = 第1間
+      そ       = 第2線
+      ら       = 第2間
+      し       = 第3線
+      ど       = 第3間
     */
 
-    const positions = [
-      192.5, // ど
-      186.25, // れ
+
+    const treblePositions = [
+
+      205,    // ど
+
+      192.5,  // れ
+
       180,    // み
+
       167.5,  // ふぁ
+
       155,    // そ
+
       142.5,  // ら
+
       130,    // し
+
       117.5   // 高いど
+
     ];
 
-    y = positions[step];
+
+    y =
+      treblePositions[step];
+
+
+  }
+
+
+  /* --------------------------------
+     ヘ音記号
+  -------------------------------- */
+
+  else {
+
+    /*
+      ヘ音記号
+
+      ど       = 第5線の上
+      れ       = 第5線
+      み       = 第4間
+      ふぁ     = 第4線
+      そ       = 第3間
+      ら       = 第3線
+      し       = 第2間
+      ど       = 第2線
+    */
+
+
+    const bassPositions = [
+
+      67.5,   // ど
+
+      80,     // れ
+
+      92.5,   // み
+
+      105,    // ふぁ
+
+      117.5,  // そ
+
+      130,    // ら
+
+      142.5,  // し
+
+      155     // 高いど
+
+    ];
+
+
+    y =
+      bassPositions[step];
+
+  }
+
+
+  /* ================================
+     低い「ど」の加線
+
+     ト音記号の最初の「ど」
+     のときだけ表示
+  ================================= */
+
+  if (
+    currentClef === "treble" &&
+    step === 0
+  ) {
+
+    ledgerLine.classList.remove(
+      "hidden"
+    );
 
   } else {
 
-    /*
-    ヘ音記号
+    ledgerLine.classList.add(
+      "hidden"
+    );
 
-    ど       = 第5線の上
-    れ       = 第5線
-    み       = 第4間
-    ふぁ     = 第4線
-    そ       = 第3間
-    ら       = 第3線
-    し       = 第2間
-    ど       = 第2線
-    */
-
-    const positions = [
-      67.5,   // ど
-      80,     // れ
-      92.5,   // み
-      105,    // ふぁ
-      117.5,  // そ
-      130,    // ら
-      142.5,  // し
-      155     // 高いど
-    ];
-
-    y = positions[step];
   }
 
+
+  /* ================================
+     音符
+  ================================= */
 
   noteHead.setAttribute(
     "cy",
     y
   );
 
+
+  /* ================================
+     音符の棒
+  ================================= */
 
   noteStem.setAttribute(
     "x1",
@@ -393,23 +477,30 @@ function drawNote(step) {
     "y2",
     y - 75
   );
+
 }
 
 
-/*
-================================
-回答ボタン
+/* ================================
+   答え
 
-順番を固定。
+   順番固定
 
-ど れ み ふぁ
-そ ら し ど
-================================
-*/
+   ど
+   れ
+   み
+   ふぁ
+
+   そ
+   ら
+   し
+   ど
+================================ */
 
 function renderAnswers() {
 
-  answersEl.innerHTML = "";
+  answersEl.innerHTML =
+    "";
 
 
   NOTES.forEach(
@@ -426,7 +517,7 @@ function renderAnswers() {
 
 
       button.textContent =
-        note.label;
+        note.answer;
 
 
       button.addEventListener(
@@ -448,14 +539,13 @@ function renderAnswers() {
 
     }
   );
+
 }
 
 
-/*
-================================
-正解判定
-================================
-*/
+/* ================================
+   正解判定
+================================ */
 
 function checkAnswer(
   selected,
@@ -471,9 +561,11 @@ function checkAnswer(
 
 
   const buttons = [
+
     ...document.querySelectorAll(
       ".answer-button"
     )
+
   ];
 
 
@@ -486,16 +578,9 @@ function checkAnswer(
   );
 
 
-  /*
-  stepで比較する。
-
-  これにより、
-
-  最初の「ど」と
-  最後の「ど」
-
-  を正しく区別できる。
-  */
+  /* ================================
+     正解
+  ================================= */
 
   if (
     selected.step ===
@@ -518,12 +603,24 @@ function checkAnswer(
       `⭐ ${score}`;
 
 
+    /*
+      正解なら自動で次へ
+    */
+
     setTimeout(
       showNextQuestion,
       900
     );
 
-  } else {
+
+  }
+
+
+  /* ================================
+     間違い
+  ================================= */
+
+  else {
 
     button.classList.add(
       "wrong"
@@ -531,14 +628,14 @@ function checkAnswer(
 
 
     messageEl.textContent =
-      `❌ おしい！ こたえは「${currentQuestion.label}」`;
+      `❌ おしい！ こたえは「${currentQuestion.answer}」`;
 
 
     /*
-    正解ボタンを探す。
+      正解のボタン
 
-    最後の「ど」はstep=7なので
-    最初の「ど」と区別できる。
+      stepとボタンの順番が
+      同じなので、そのまま取得できる
     */
 
     const correctButton =
@@ -557,28 +654,29 @@ function checkAnswer(
 
 
     /*
-    間違えたら
-    自分で「つぎへ」を押す。
+      間違えた場合は
+      「つぎへ」を押して進む
     */
 
     nextButton.classList.remove(
       "hidden"
     );
+
   }
+
 }
 
 
-/*
-================================
-結果
-================================
-*/
+/* ================================
+   結果
+================================ */
 
 function showResult() {
 
   quiz.classList.add(
     "hidden"
   );
+
 
   result.classList.remove(
     "hidden"
@@ -597,33 +695,42 @@ function showResult() {
     resultTextEl.textContent =
       "ぜんぶ せいかい！ すごいね！ 🌟";
 
-  } else if (
+  }
+
+
+  else if (
     score >= 6
   ) {
 
     resultTextEl.textContent =
       "よくできました！ すごい！";
 
-  } else if (
+  }
+
+
+  else if (
     score >= 4
   ) {
 
     resultTextEl.textContent =
       "がんばったね！ もういちど やってみよう！";
 
-  } else {
+  }
+
+
+  else {
 
     resultTextEl.textContent =
       "れんしゅう おつかれさま！ またやってみよう！";
+
   }
+
 }
 
 
-/*
-================================
-メニューへ
-================================
-*/
+/* ================================
+   メニューへ戻る
+================================ */
 
 function showMenu() {
 
@@ -631,19 +738,23 @@ function showMenu() {
     "hidden"
   );
 
+
   result.classList.add(
     "hidden"
   );
+
 
   menu.classList.remove(
     "hidden"
   );
 
 
-  messageEl.textContent = "";
+  messageEl.textContent =
+    "";
 
 
   nextButton.classList.add(
     "hidden"
   );
+
 }

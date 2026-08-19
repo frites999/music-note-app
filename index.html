@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no"
-  >
-
-  <meta
-    name="theme-color"
-    content="#f5f7ff"
+    content="width=device-width, initial-scale=1.0"
   >
 
   <title>おんぷゲーム</title>
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
+  <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
-  <main class="app">
+  <div class="app">
+
+    <!-- =================================
+         ヘッダー
+    ================================== -->
+
+    <header>
+      <h1>🎵 おんぷゲーム</h1>
+
+      <p>
+        おんぷを よんでみよう！
+      </p>
+    </header>
 
 
     <!-- =================================
-         メニュー
+         メインメニュー
     ================================== -->
 
     <section
@@ -39,15 +39,9 @@
       class="screen"
     >
 
-      <header>
-
-        <h1>🎵 おんぷゲーム</h1>
-
-        <p>
-          おんぷを よんでみよう！
-        </p>
-
-      </header>
+      <h2>
+        れんしゅうを えらんでね
+      </h2>
 
 
       <!-- =================================
@@ -57,55 +51,41 @@
       <div class="clef-section">
 
         <h2>
+          <span class="section-clef">𝄞</span>
           とおんきごう
         </h2>
 
 
         <div class="clef-buttons">
 
-
           <!-- かんたん -->
 
           <button
-            class="clef-button treble"
+            class="clef-button"
             data-clef="treble"
             data-level="easy"
           >
-
-            <span class="clef-symbol">
-              𝄞
-            </span>
-
             <span class="clef-level">
               かんたん
             </span>
-
           </button>
 
 
           <!-- むずかしい -->
 
           <button
-            class="clef-button treble"
+            class="clef-button"
             data-clef="treble"
             data-level="hard"
           >
-
-            <span class="clef-symbol">
-              𝄞
-            </span>
-
             <span class="clef-level">
               むずかしい
             </span>
-
           </button>
-
 
         </div>
 
       </div>
-
 
 
       <!-- =================================
@@ -115,58 +95,43 @@
       <div class="clef-section">
 
         <h2>
+          <span class="section-clef">𝄢</span>
           へおんきごう
         </h2>
 
 
         <div class="clef-buttons">
 
-
           <!-- かんたん -->
 
           <button
-            class="clef-button bass"
+            class="clef-button"
             data-clef="bass"
             data-level="easy"
           >
-
-            <span class="clef-symbol">
-              𝄢
-            </span>
-
             <span class="clef-level">
               かんたん
             </span>
-
           </button>
 
 
           <!-- むずかしい -->
 
           <button
-            class="clef-button bass"
+            class="clef-button"
             data-clef="bass"
             data-level="hard"
           >
-
-            <span class="clef-symbol">
-              𝄢
-            </span>
-
             <span class="clef-level">
               むずかしい
             </span>
-
           </button>
-
 
         </div>
 
       </div>
 
-
     </section>
-
 
 
     <!-- =================================
@@ -178,13 +143,9 @@
       class="screen hidden"
     >
 
-
-      <!-- =================================
-           上部
-      ================================== -->
+      <!-- クイズ上部 -->
 
       <div class="quiz-top">
-
 
         <button
           id="back-button"
@@ -195,24 +156,16 @@
         </button>
 
 
-        <div
-          id="progress"
-          class="progress"
-        >
-          1 / 8
+        <div id="progress">
+          1 / 10
         </div>
 
 
-        <div
-          id="score"
-          class="score"
-        >
+        <div id="score">
           ⭐ 0
         </div>
 
-
       </div>
-
 
 
       <!-- =================================
@@ -220,16 +173,6 @@
       ================================== -->
 
       <div class="question-card">
-
-
-
-
-
-
-
-        <!-- =================================
-             五線譜
-        ================================== -->
 
         <div class="staff-wrap">
 
@@ -240,94 +183,81 @@
             aria-label="五線譜"
           >
 
-
-            <!-- ---------------------------------
+            <!-- =================================
                  五線
-            ---------------------------------- -->
+            ================================== -->
 
             <line
+              class="staff-line"
               x1="50"
               y1="80"
               x2="550"
               y2="80"
-              class="staff-line"
             />
 
             <line
+              class="staff-line"
               x1="50"
               y1="105"
               x2="550"
               y2="105"
-              class="staff-line"
             />
 
             <line
+              class="staff-line"
               x1="50"
               y1="130"
               x2="550"
               y2="130"
-              class="staff-line"
             />
 
             <line
+              class="staff-line"
               x1="50"
               y1="155"
               x2="550"
               y2="155"
-              class="staff-line"
             />
 
             <line
+              class="staff-line"
               x1="50"
               y1="180"
               x2="550"
               y2="180"
-              class="staff-line"
             />
 
 
-
-            <!-- ---------------------------------
+            <!-- =================================
                  音部記号
-            ---------------------------------- -->
+            ================================== -->
 
             <text
               id="clef-symbol"
               x="70"
               y="160"
-            >
-            </text>
+            ></text>
 
 
-
-            <!-- ---------------------------------
+            <!-- =================================
                  音符
-            ---------------------------------- -->
+            ================================== -->
 
             <g id="note-group">
 
-
-              <!--
-                加線
-
-                とおんきごう：
-                低い「ど」
-
-                へおんきごう：
-                高い「ど」
-              -->
+              <!-- 加線 -->
 
               <line
                 id="ledger-line"
+                class="staff-line hidden"
                 x1="335"
                 y1="205"
                 x2="385"
                 y2="205"
-                class="staff-line hidden"
               />
 
 
-              <!-- 音符の頭 -->
+              <!-- 音符のたま -->
 
               <ellipse
                 id="note-head"
@@ -335,11 +265,10 @@
                 cy="130"
                 rx="17"
                 ry="12"
-              >
-              </ellipse>
+              ></ellipse>
 
 
-              <!-- 音符の棒 -->
+              <!-- 音符のぼう -->
 
               <line
                 id="note-stem"
@@ -349,7 +278,6 @@
                 y2="55"
               />
 
-
             </g>
 
           </svg>
@@ -357,49 +285,40 @@
         </div>
 
 
-
-        <!-- ---------------------------------
+        <!-- =================================
              問題文
-        ---------------------------------- -->
+        ================================== -->
 
         <p class="question-label">
           この おとは なに？
         </p>
 
-
       </div>
 
 
-
       <!-- =================================
-           回答ボタン
+           回答
       ================================== -->
 
       <div
         id="answers"
         class="answers"
-      >
-      </div>
-
+      ></div>
 
 
       <!-- =================================
-           正解・不正解メッセージ
+           メッセージ
       ================================== -->
 
       <div
         id="message"
         class="message"
         aria-live="polite"
-      >
-      </div>
-
+      ></div>
 
 
       <!-- =================================
            つぎへボタン
-
-           間違えたときだけ表示
       ================================== -->
 
       <button
@@ -407,12 +326,10 @@
         class="next-button hidden"
         type="button"
       >
-        つぎへ →
+        つぎへ
       </button>
 
-
     </section>
-
 
 
     <!-- =================================
@@ -426,9 +343,8 @@
 
       <div class="result-card">
 
-
         <div class="result-icon">
-          🎉
+          🌟
         </div>
 
 
@@ -437,37 +353,31 @@
         </h2>
 
 
-        <p id="result-text">
-          がんばったね！
-        </p>
-
-
         <div
           id="result-score"
           class="result-score"
         >
-          0 / 8
+          0 / 10
         </div>
 
 
+        <p id="result-text">
+          よくできました！
+        </p>
 
-        <!-- ---------------------------------
-             もう一度
-        ---------------------------------- -->
+
+        <!-- もういちど -->
 
         <button
           id="again-button"
           class="main-button"
           type="button"
         >
-          もういちど！
+          もういちど
         </button>
 
 
-
-        <!-- ---------------------------------
-             メニューへ
-        ---------------------------------- -->
+        <!-- メニューへ -->
 
         <button
           id="menu-button"
@@ -477,14 +387,11 @@
           メニューへ
         </button>
 
-
       </div>
 
     </section>
 
-
-  </main>
-
+  </div>
 
 
   <!-- =================================
@@ -493,7 +400,5 @@
 
   <script src="app.js"></script>
 
-
 </body>
-
 </html>

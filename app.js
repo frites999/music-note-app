@@ -1,4 +1,9 @@
-const TOTAL_QUESTIONS = 8;
+/* =================================
+   問題数
+================================= */
+
+const EASY_QUESTIONS = 8;
+const HARD_QUESTIONS = 10;
 
 
 /* =================================
@@ -66,6 +71,8 @@ const ledgerLine =
 
 let currentClef = null;
 
+let currentLevel = null;
+
 let currentQuestion = null;
 
 let questionNumber = 0;
@@ -74,20 +81,13 @@ let score = 0;
 
 let locked = false;
 
+let totalQuestions = EASY_QUESTIONS;
+
 
 /* =================================
    音の一覧
 
-   ランダムにはしない。
-
-   ど
-   れ
-   み
-   ふぁ
-   そ
-   ら
-   し
-   ど
+   答えボタンは常にこの8種類
 ================================= */
 
 const NOTES = [
@@ -136,6 +136,13 @@ const NOTES = [
 
 
 /* =================================
+   現在の問題リスト
+================================= */
+
+let questionList = [];
+
+
+/* =================================
    メニュー
 ================================= */
 
@@ -148,7 +155,8 @@ document
       () => {
 
         startGame(
-          button.dataset.clef
+          button.dataset.clef,
+          button.dataset.level
         );
 
       }
@@ -172,7 +180,8 @@ againButton.addEventListener(
   () => {
 
     startGame(
-      currentClef
+      currentClef,
+      currentLevel
     );
 
   }
@@ -195,9 +204,14 @@ nextButton.addEventListener(
    ゲーム開始
 ================================= */
 
-function startGame(clef) {
+function startGame(
+  clef,
+  level
+) {
 
   currentClef = clef;
+
+  currentLevel = level;
 
   questionNumber = 0;
 
@@ -205,6 +219,79 @@ function startGame(clef) {
 
   locked = false;
 
+
+  /* --------------------------------
+     問題数
+  -------------------------------- */
+
+  if (
+    level === "hard"
+  ) {
+
+    totalQuestions =
+      HARD_QUESTIONS;
+
+  } else {
+
+    totalQuestions =
+      EASY_QUESTIONS;
+
+  }
+
+
+  /* --------------------------------
+     問題を作る
+  -------------------------------- */
+
+  if (
+    level === "hard"
+  ) {
+
+    /*
+      むずかしい：
+
+      8種類の音から
+      ランダムに10問
+    */
+
+    questionList = [];
+
+    for (
+      let i = 0;
+      i < HARD_QUESTIONS;
+      i++
+    ) {
+
+      const randomIndex =
+        Math.floor(
+          Math.random() *
+          NOTES.length
+        );
+
+
+      questionList.push(
+        NOTES[randomIndex]
+      );
+
+    }
+
+  } else {
+
+    /*
+      かんたん：
+
+      ど → れ → み → ...
+    */
+
+    questionList =
+      [...NOTES];
+
+  }
+
+
+  /* --------------------------------
+     画面
+  -------------------------------- */
 
   menu.classList.add(
     "hidden"
@@ -224,10 +311,18 @@ function startGame(clef) {
   );
 
 
-  if (clef === "treble") {
+  /* --------------------------------
+     音部記号
+  -------------------------------- */
+
+  if (
+    clef === "treble"
+  ) {
 
     clefTitle.textContent =
-      "とおんきごう";
+      level === "hard"
+        ? "とおんきごう・むずかしい"
+        : "とおんきごう";
 
     clefSymbol.textContent =
       "𝄞";
@@ -235,7 +330,9 @@ function startGame(clef) {
   } else {
 
     clefTitle.textContent =
-      "へおんきごう";
+      level === "hard"
+        ? "へおんきごう・むずかしい"
+        : "へおんきごう";
 
     clefSymbol.textContent =
       "𝄢";
@@ -255,7 +352,7 @@ function showNextQuestion() {
 
   if (
     questionNumber >=
-    TOTAL_QUESTIONS
+    totalQuestions
   ) {
 
     showResult();
@@ -265,7 +362,9 @@ function showNextQuestion() {
 
 
   currentQuestion =
-    NOTES[questionNumber];
+    questionList[
+      questionNumber
+    ];
 
 
   questionNumber++;
@@ -283,7 +382,7 @@ function showNextQuestion() {
 
 
   progressEl.textContent =
-    `${questionNumber} / ${TOTAL_QUESTIONS}`;
+    `${questionNumber} / ${totalQuestions}`;
 
 
   scoreEl.textContent =
@@ -333,19 +432,12 @@ function drawNote(step) {
     const treblePositions = [
 
       205,     // ど
-
       192.5,   // れ
-
       180,     // み
-
       167.5,   // ふぁ
-
       155,     // そ
-
       142.5,   // ら
-
       130,     // し
-
       117.5    // 高いど
 
     ];
@@ -356,15 +448,25 @@ function drawNote(step) {
 
 
     /* --------------------------------
-       とおんきごうの低い「ど」
-
-       加線を表示
+       低いどの加線
     -------------------------------- */
 
-    if (step === 0) {
+    if (
+      step === 0
+    ) {
 
       ledgerLine.classList.remove(
         "hidden"
+      );
+
+      ledgerLine.setAttribute(
+        "x1",
+        335
+      );
+
+      ledgerLine.setAttribute(
+        "x2",
+        385
       );
 
       ledgerLine.setAttribute(
@@ -431,28 +533,18 @@ function drawNote(step) {
       そ       = 92.5
       ら       = 80
       し       = 67.5
-      ど       = 55
-
-      高い「ど」は五線の上なので
-      加線を1本つける。
+      高いど   = 55 ＋ 加線
     */
 
     const bassPositions = [
 
       142.5,   // ど
-
       130,     // れ
-
       117.5,   // み
-
       105,     // ふぁ
-
       92.5,    // そ
-
       80,      // ら
-
       67.5,    // し
-
       55       // 高いど
 
     ];
@@ -463,12 +555,12 @@ function drawNote(step) {
 
 
     /* --------------------------------
-       へおんきごうの加線
-
-       高い「ど」だけ
+       高いどの加線
     -------------------------------- */
 
-    if (step === 7) {
+    if (
+      step === 7
+    ) {
 
       ledgerLine.classList.remove(
         "hidden"
@@ -536,29 +628,10 @@ function drawNote(step) {
      音符の頭
   ================================= */
 
-  if (
-    currentClef === "treble"
-  ) {
-
-    noteHead.setAttribute(
-      "cx",
-      360
-    );
-
-  } else {
-
-    /*
-      棒を左側につけるため、
-      音符の位置を少し右にする。
-    */
-
-    noteHead.setAttribute(
-      "cx",
-      360
-    );
-
-  }
-
+  noteHead.setAttribute(
+    "cx",
+    360
+  );
 
   noteHead.setAttribute(
     "cy",
@@ -577,6 +650,20 @@ function renderAnswers() {
   answersEl.innerHTML =
     "";
 
+
+  /*
+    むずかしい場合も
+    ボタンは同じ。
+
+    ど
+    れ
+    み
+    ふぁ
+    そ
+    ら
+    し
+    ど
+  */
 
   NOTES.forEach(
     (note) => {
@@ -701,11 +788,27 @@ function checkAnswer(
       `❌ おしい！ こたえは「${currentQuestion.answer}」`;
 
 
-    const correctButton =
-      buttons[
-        currentQuestion.step
-      ];
+    /*
+      同じ「ど」が2つあるため、
+      stepで正しいボタンを探す。
+    */
 
+    const correctButton =
+      buttons.find(
+        (btn) =>
+          btn.textContent ===
+          currentQuestion.answer
+      );
+
+
+    /*
+      「ど」が2つあるので、
+      現在の問題のstepに
+      対応するボタンを正解にする。
+
+      ただし表示上は同じ「ど」なので、
+      どちらを押しても正解にする。
+    */
 
     if (correctButton) {
 
@@ -715,6 +818,11 @@ function checkAnswer(
 
     }
 
+
+    /*
+      間違えた場合は
+      「つぎへ」
+    */
 
     nextButton.classList.remove(
       "hidden"
@@ -742,12 +850,12 @@ function showResult() {
 
 
   resultScoreEl.textContent =
-    `${score} / ${TOTAL_QUESTIONS}`;
+    `${score} / ${totalQuestions}`;
 
 
   if (
     score ===
-    TOTAL_QUESTIONS
+    totalQuestions
   ) {
 
     resultTextEl.textContent =
@@ -756,7 +864,8 @@ function showResult() {
   }
 
   else if (
-    score >= 6
+    score >=
+    Math.ceil(totalQuestions * 0.7)
   ) {
 
     resultTextEl.textContent =
@@ -765,7 +874,8 @@ function showResult() {
   }
 
   else if (
-    score >= 4
+    score >=
+    Math.ceil(totalQuestions * 0.4)
   ) {
 
     resultTextEl.textContent =

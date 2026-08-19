@@ -864,10 +864,10 @@ h2 {
 /* =================================
    メニューの音部記号マーク
 ================================= */
-
 .section-clef {
   font-family: "Times New Roman", serif;
-  font-size: 32px;
+  font-size: 52px;
   vertical-align: middle;
-  margin-right: 6px;
+  margin-right: 10px;
+  line-height: 0;
 }

@@ -1,4 +1,4 @@
-const TOTAL_QUESTIONS = 10;
+const TOTAL_QUESTIONS = 8;
 
 const menu = document.getElementById("menu");
 const quiz = document.getElementById("quiz");
@@ -46,57 +46,91 @@ let score = 0;
 let locked = false;
 
 
-/* ================================
-   音の一覧
-================================ */
+/*
+================================
+音の順番
+
+画面には
+
+ど
+れ
+み
+ふぁ
+そ
+ら
+し
+ど
+
+と表示する。
+
+最後の「ど」は高いド。
+================================
+*/
 
 const NOTES = [
   {
-    name: "ド",
+    answer: "ど",
+    label: "ど",
     step: 0
   },
   {
-    name: "レ",
+    answer: "れ",
+    label: "れ",
     step: 1
   },
   {
-    name: "ミ",
+    answer: "み",
+    label: "み",
     step: 2
   },
   {
-    name: "ファ",
+    answer: "ふぁ",
+    label: "ふぁ",
     step: 3
   },
   {
-    name: "ソ",
+    answer: "そ",
+    label: "そ",
     step: 4
   },
   {
-    name: "ラ",
+    answer: "ら",
+    label: "ら",
     step: 5
   },
   {
-    name: "シ",
+    answer: "し",
+    label: "し",
     step: 6
   },
   {
-    name: "高いド",
+    answer: "ど",
+    label: "ど",
     step: 7
   }
 ];
 
 
-/* ================================
-   メニュー
-================================ */
+/*
+================================
+メニュー
+================================
+*/
 
 document
   .querySelectorAll(".clef-button")
   .forEach((button) => {
 
-    button.addEventListener("click", () => {
-      startGame(button.dataset.clef);
-    });
+    button.addEventListener(
+      "click",
+      () => {
+
+        startGame(
+          button.dataset.clef
+        );
+
+      }
+    );
 
   });
 
@@ -110,7 +144,9 @@ backButton.addEventListener(
 againButton.addEventListener(
   "click",
   () => {
+
     startGame(currentClef);
+
   }
 );
 
@@ -127,23 +163,32 @@ nextButton.addEventListener(
 );
 
 
-/* ================================
-   ゲーム開始
-================================ */
+/*
+================================
+ゲーム開始
+================================
+*/
 
 function startGame(clef) {
 
   currentClef = clef;
 
   questionNumber = 0;
+
   score = 0;
+
   locked = false;
 
   menu.classList.add("hidden");
+
   result.classList.add("hidden");
+
   quiz.classList.remove("hidden");
 
-  nextButton.classList.add("hidden");
+  nextButton.classList.add(
+    "hidden"
+  );
+
 
   if (clef === "treble") {
 
@@ -160,22 +205,56 @@ function startGame(clef) {
 
     clefSymbol.textContent =
       "𝄢";
+
   }
+
 
   showNextQuestion();
 }
 
 
-/* ================================
-   次の問題
-================================ */
+/*
+================================
+次の問題
+
+ランダムではなく、
+
+ど
+↓
+れ
+↓
+み
+↓
+ふぁ
+↓
+そ
+↓
+ら
+↓
+し
+↓
+ど
+
+の順番。
+================================
+*/
 
 function showNextQuestion() {
 
-  if (questionNumber >= TOTAL_QUESTIONS) {
+  if (
+    questionNumber >=
+    TOTAL_QUESTIONS
+  ) {
+
     showResult();
+
     return;
   }
+
+
+  currentQuestion =
+    NOTES[questionNumber];
+
 
   questionNumber++;
 
@@ -183,134 +262,117 @@ function showNextQuestion() {
 
   messageEl.textContent = "";
 
-  nextButton.classList.add("hidden");
+  nextButton.classList.add(
+    "hidden"
+  );
+
 
   progressEl.textContent =
     `${questionNumber} / ${TOTAL_QUESTIONS}`;
 
+
   scoreEl.textContent =
     `⭐ ${score}`;
 
-  currentQuestion = makeQuestion();
 
-  drawNote(currentQuestion.step);
-
-  renderAnswers(currentQuestion);
-}
-
-
-/* ================================
-   問題作成
-================================ */
-
-function makeQuestion() {
-
-  const index = randomInt(
-    0,
-    NOTES.length - 1
+  drawNote(
+    currentQuestion.step
   );
 
-  return NOTES[index];
+
+  renderAnswers(
+    currentQuestion
+  );
 }
 
 
-/* ================================
-   音符を描画
-================================ */
+/*
+================================
+音符の位置
+
+五線譜
+
+第1線 = 180
+第2線 = 155
+第3線 = 130
+第4線 = 105
+第5線 = 80
+
+線と線の間 = 12.5px
+================================
+*/
 
 function drawNote(step) {
-
-  /*
-    五線譜
-
-    第1線 = y 180
-    第2線 = y 155
-    第3線 = y 130
-    第4線 = y 105
-    第5線 = y 80
-
-    音階1つ分 = 12.5px
-  */
-
 
   let y;
 
 
-  if (currentClef === "treble") {
+  if (
+    currentClef ===
+    "treble"
+  ) {
 
     /*
-      ト音記号
+    ト音記号
 
-      中央のド〜高いド
-
-      ド       = 第1線の下
-      レ       = 第1線の下の間
-      ミ       = 第1線
-      ファ     = 第1間
-      ソ       = 第2線
-      ラ       = 第2間
-      シ       = 第3線
-      高いド   = 第3間
+    ど       = 第1線の下
+    れ       = 第1線の下の間
+    み       = 第1線
+    ふぁ     = 第1間
+    そ       = 第2線
+    ら       = 第2間
+    し       = 第3線
+    ど       = 第3間
     */
 
-    const trebleY = [
-      192.5, // ド
-      186.25, // レ
-      180,   // ミ
-      167.5, // ファ
-      155,   // ソ
-      142.5, // ラ
-      130,   // シ
-      117.5  // 高いド
+    const positions = [
+      192.5, // ど
+      186.25, // れ
+      180,    // み
+      167.5,  // ふぁ
+      155,    // そ
+      142.5,  // ら
+      130,    // し
+      117.5   // 高いど
     ];
 
-    y = trebleY[step];
+    y = positions[step];
 
   } else {
 
     /*
-      ヘ音記号
+    ヘ音記号
 
-      中央のド〜高いド
-
-      ド       = 第5線の上
-      レ       = 第5線
-      ミ       = 第4間
-      ファ     = 第4線
-      ソ       = 第3間
-      ラ       = 第3線
-      シ       = 第2間
-      高いド   = 第2線
+    ど       = 第5線の上
+    れ       = 第5線
+    み       = 第4間
+    ふぁ     = 第4線
+    そ       = 第3間
+    ら       = 第3線
+    し       = 第2間
+    ど       = 第2線
     */
 
-    const bassY = [
-      67.5,  // ド
-      80,    // レ
-      92.5,  // ミ
-      105,   // ファ
-      117.5, // ソ
-      130,   // ラ
-      142.5, // シ
-      155    // 高いド
+    const positions = [
+      67.5,   // ど
+      80,     // れ
+      92.5,   // み
+      105,    // ふぁ
+      117.5,  // そ
+      130,    // ら
+      142.5,  // し
+      155     // 高いど
     ];
 
-    y = bassY[step];
+    y = positions[step];
   }
 
-
-  /*
-    音符の位置
-  */
 
   noteHead.setAttribute(
     "cy",
     y
   );
 
-
-  /*
-    棒は音符の右側から上へ
-  */
 
   noteStem.setAttribute(
     "x1",
@@ -334,59 +396,79 @@ function drawNote(step) {
 }
 
 
-/* ================================
-   答え
-================================ */
+/*
+================================
+回答ボタン
 
-function renderAnswers(question) {
+順番を固定。
+
+ど れ み ふぁ
+そ ら し ど
+================================
+*/
+
+function renderAnswers() {
 
   answersEl.innerHTML = "";
 
-  const answers = NOTES.map(
-    (note) => note.name
-  );
 
-  shuffle(answers);
+  NOTES.forEach(
+    (note) => {
 
-  answers.forEach((answer) => {
-
-    const button =
-      document.createElement("button");
-
-    button.className =
-      "answer-button";
-
-    button.textContent =
-      answer;
-
-    button.addEventListener(
-      "click",
-      () => {
-        checkAnswer(
-          answer,
-          button
+      const button =
+        document.createElement(
+          "button"
         );
-      }
-    );
 
-    answersEl.appendChild(button);
 
-  });
+      button.className =
+        "answer-button";
+
+
+      button.textContent =
+        note.label;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          checkAnswer(
+            note,
+            button
+          );
+
+        }
+      );
+
+
+      answersEl.appendChild(
+        button
+      );
+
+    }
+  );
 }
 
 
-/* ================================
-   正解判定
-================================ */
+/*
+================================
+正解判定
+================================
+*/
 
 function checkAnswer(
   selected,
   button
 ) {
 
-  if (locked) return;
+  if (locked) {
+    return;
+  }
+
 
   locked = true;
+
 
   const buttons = [
     ...document.querySelectorAll(
@@ -394,26 +476,47 @@ function checkAnswer(
     )
   ];
 
-  buttons.forEach((btn) => {
-    btn.disabled = true;
-  });
 
+  buttons.forEach(
+    (btn) => {
+
+      btn.disabled = true;
+
+    }
+  );
+
+
+  /*
+  stepで比較する。
+
+  これにより、
+
+  最初の「ど」と
+  最後の「ど」
+
+  を正しく区別できる。
+  */
 
   if (
-    selected === currentQuestion.name
+    selected.step ===
+    currentQuestion.step
   ) {
 
     score++;
+
 
     button.classList.add(
       "correct"
     );
 
+
     messageEl.textContent =
       "⭕ せいかい！ すごい！";
 
+
     scoreEl.textContent =
       `⭐ ${score}`;
+
 
     setTimeout(
       showNextQuestion,
@@ -426,21 +529,37 @@ function checkAnswer(
       "wrong"
     );
 
+
     messageEl.textContent =
-      `❌ おしい！ これは ${currentQuestion.name}`;
+      `❌ おしい！ こたえは「${currentQuestion.label}」`;
+
+
+    /*
+    正解ボタンを探す。
+
+    最後の「ど」はstep=7なので
+    最初の「ど」と区別できる。
+    */
 
     const correctButton =
-      buttons.find(
-        (btn) =>
-          btn.textContent ===
-          currentQuestion.name
-      );
+      buttons[
+        currentQuestion.step
+      ];
+
 
     if (correctButton) {
+
       correctButton.classList.add(
         "correct"
       );
+
     }
+
+
+    /*
+    間違えたら
+    自分で「つぎへ」を押す。
+    */
 
     nextButton.classList.remove(
       "hidden"
@@ -449,31 +568,45 @@ function checkAnswer(
 }
 
 
-/* ================================
-   結果
-================================ */
+/*
+================================
+結果
+================================
+*/
 
 function showResult() {
 
-  quiz.classList.add("hidden");
+  quiz.classList.add(
+    "hidden"
+  );
 
-  result.classList.remove("hidden");
+  result.classList.remove(
+    "hidden"
+  );
+
 
   resultScoreEl.textContent =
     `${score} / ${TOTAL_QUESTIONS}`;
 
 
-  if (score === TOTAL_QUESTIONS) {
+  if (
+    score ===
+    TOTAL_QUESTIONS
+  ) {
 
     resultTextEl.textContent =
       "ぜんぶ せいかい！ すごいね！ 🌟";
 
-  } else if (score >= 7) {
+  } else if (
+    score >= 6
+  ) {
 
     resultTextEl.textContent =
       "よくできました！ すごい！";
 
-  } else if (score >= 4) {
+  } else if (
+    score >= 4
+  ) {
 
     resultTextEl.textContent =
       "がんばったね！ もういちど やってみよう！";
@@ -486,59 +619,31 @@ function showResult() {
 }
 
 
-/* ================================
-   メニューへ戻る
-================================ */
+/*
+================================
+メニューへ
+================================
+*/
 
 function showMenu() {
 
-  quiz.classList.add("hidden");
+  quiz.classList.add(
+    "hidden"
+  );
 
-  result.classList.add("hidden");
+  result.classList.add(
+    "hidden"
+  );
 
-  menu.classList.remove("hidden");
+  menu.classList.remove(
+    "hidden"
+  );
+
 
   messageEl.textContent = "";
 
-  nextButton.classList.add("hidden");
-}
 
-
-/* ================================
-   ランダム
-================================ */
-
-function randomInt(min, max) {
-
-  return Math.floor(
-    Math.random() *
-      (max - min + 1)
-  ) + min;
-}
-
-
-/* ================================
-   シャッフル
-================================ */
-
-function shuffle(array) {
-
-  for (
-    let i = array.length - 1;
-    i > 0;
-    i--
-  ) {
-
-    const j = randomInt(0, i);
-
-    [
-      array[i],
-      array[j]
-    ] = [
-      array[j],
-      array[i]
-    ];
-  }
-
-  return array;
+  nextButton.classList.add(
+    "hidden"
+  );
 }

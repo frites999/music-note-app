@@ -1,7 +1,3 @@
-/* =================================
-   全体
-================================= */
-
 * {
   box-sizing: border-box;
 }
@@ -9,11 +5,8 @@
 html,
 body {
   margin: 0;
-  padding: 0;
   min-height: 100%;
-}
 
-body {
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -23,14 +16,17 @@ body {
     sans-serif;
 
   background: #f5f7ff;
-  color: #333;
-
-  -webkit-tap-highlight-color: transparent;
+  color: #263238;
 }
 
+body {
+  min-height: 100vh;
+  touch-action: manipulation;
+}
 
 button {
-  font-family: inherit;
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -40,14 +36,45 @@ button {
 
 .app {
   width: 100%;
-  max-width: 700px;
+  max-width: 680px;
+  min-height: 100vh;
 
   margin: 0 auto;
 
   padding:
-    24px
-    20px
-    40px;
+    18px
+    16px
+    32px;
+}
+
+
+/* =================================
+   ヘッダー
+================================= */
+
+header {
+  text-align: center;
+
+  padding:
+    8px
+    0
+    18px;
+}
+
+h1 {
+  margin: 0;
+
+  font-size:
+    clamp(28px, 7vw, 42px);
+}
+
+header p {
+  margin:
+    8px
+    0
+    0;
+
+  font-size: 18px;
 }
 
 
@@ -56,7 +83,10 @@ button {
 ================================= */
 
 .screen {
-  width: 100%;
+  animation:
+    appear
+    0.2s
+    ease-out;
 }
 
 .hidden {
@@ -65,145 +95,147 @@ button {
 
 
 /* =================================
-   メニュー
+   見出し
 ================================= */
 
-#menu {
+h2 {
   text-align: center;
-}
 
+  font-size: 25px;
 
-/* タイトル */
-
-#menu header {
-  margin-bottom: 32px;
-}
-
-#menu h1 {
-  margin: 0 0 10px;
-
-  font-size: 2.1rem;
-  line-height: 1.3;
-
-  color: #333;
-}
-
-#menu header p {
-  margin: 0;
-
-  font-size: 1.15rem;
-  color: #666;
+  margin:
+    12px
+    0
+    20px;
 }
 
 
 /* =================================
-   音部記号ごとのセクション
+   音部記号のメニュー
 ================================= */
 
 .clef-section {
-  margin-bottom: 34px;
+  background: white;
+
+  border-radius: 22px;
+
+  padding: 18px;
+
+  margin-bottom: 18px;
+
+  box-shadow:
+    0 4px 16px
+    rgba(40, 60, 100, 0.08);
 }
 
+
+/* 音部記号タイトル */
+
 .clef-section h2 {
-  margin: 0 0 16px;
+  margin:
+    0
+    0
+    12px;
 
-  font-size: 1.5rem;
-  line-height: 1.4;
+  font-size: 22px;
 
-  color: #444;
+  text-align: left;
 }
 
 
 /* =================================
-   ボタンを縦に並べる
+   メニューボタン
 ================================= */
 
 .clef-buttons {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 14px;
-
   width: 100%;
 }
-
-
-/* =================================
-   音部記号ボタン
-================================= */
 
 .clef-button {
   width: 100%;
 
-  min-height: 86px;
+  min-height: 76px;
 
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 18px;
-
-  padding: 14px 20px;
-
-  border: 2px solid #d9def2;
+  border: 0;
 
   border-radius: 18px;
 
-  background: white;
+  margin-top: 10px;
 
-  color: #333;
+  color: #172027;
 
   cursor: pointer;
 
   box-shadow:
-    0 3px 8px rgba(0, 0, 0, 0.06);
+    0 4px 0
+    rgba(0, 0, 0, 0.12);
 
-  transition:
-    transform 0.08s ease,
-    box-shadow 0.08s ease,
-    background 0.08s ease;
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 18px;
+
+  padding:
+    10px
+    18px;
 }
+
+
+/* =================================
+   メニューボタンの押した時
+================================= */
 
 .clef-button:active {
-  transform: scale(0.98);
+  transform: translateY(3px);
 
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
 }
 
 
-/* 記号 */
+/* =================================
+   音部記号
+================================= */
 
 .clef-symbol {
   font-family:
     "Times New Roman",
     serif;
 
-  font-size: 3.5rem;
+  font-size: 48px;
 
   line-height: 1;
 }
 
 
-/* レベル */
+/* =================================
+   レベル
+================================= */
 
 .clef-level {
-  font-size: 1.35rem;
+  font-size: 25px;
 
-  font-weight: bold;
-
-  white-space: nowrap;
+  font-weight: 800;
 }
 
 
 /* =================================
-   クイズ画面
+   かんたん
 ================================= */
 
-#quiz {
-  text-align: center;
+.clef-button[data-level="easy"] {
+  background: #d9f7df;
+}
+
+
+/* =================================
+   むずかしい
+================================= */
+
+.clef-button[data-level="hard"] {
+  background: #ffe6b3;
 }
 
 
@@ -221,43 +253,56 @@ button {
 
   align-items: center;
 
-  margin-bottom: 18px;
+  gap: 8px;
+
+  margin-bottom: 16px;
 }
 
-.quiz-top .small-button {
-  justify-self: start;
-}
-
-.progress {
-  font-size: 1.05rem;
-  font-weight: bold;
-  color: #555;
-}
-
-.score {
-  justify-self: end;
-
-  font-size: 1.05rem;
-  font-weight: bold;
+.quiz-top > :last-child {
+  text-align: right;
 }
 
 
 /* =================================
-   戻るボタン
+   もどるボタン
 ================================= */
 
 .small-button {
-  border: none;
+  justify-self: start;
 
-  background: transparent;
+  border: 0;
 
-  color: #555;
+  background: white;
 
-  font-size: 1rem;
+  border-radius: 14px;
 
-  padding: 8px 4px;
+  padding:
+    10px
+    13px;
+
+  box-shadow:
+    0 3px 0
+    rgba(0, 0, 0, 0.12);
 
   cursor: pointer;
+}
+
+.small-button:active {
+  transform: translateY(3px);
+
+  box-shadow: none;
+}
+
+
+/* =================================
+   進行・スコア
+================================= */
+
+#progress,
+#score {
+  font-size: 17px;
+
+  font-weight: 800;
 }
 
 
@@ -268,30 +313,31 @@ button {
 .question-card {
   background: white;
 
-  border-radius: 20px;
+  border-radius: 26px;
 
   padding:
     20px
-    14px
-    22px;
+    12px
+    26px;
+
+  text-align: center;
 
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.06);
-
-  margin-bottom: 18px;
+    0 5px 18px
+    rgba(40, 60, 100, 0.09);
 }
 
 
-/* 音部記号タイトル */
+/* =================================
+   とおんきごう・へおんきごう
+================================= */
 
-.clef-title {
-  font-size: 1.45rem;
+#clef-title {
+  font-size: 25px;
 
-  font-weight: bold;
+  font-weight: 900;
 
-  margin-bottom: 6px;
-
-  color: #444;
+  margin-bottom: 4px;
 }
 
 
@@ -302,9 +348,9 @@ button {
 .staff-wrap {
   width: 100%;
 
-  max-width: 600px;
-
-  margin: 0 auto;
+  margin:
+    0
+    auto;
 }
 
 #staff {
@@ -316,16 +362,20 @@ button {
 }
 
 
-/* 五線 */
+/* =================================
+   五線
+================================= */
 
 .staff-line {
-  stroke: #333;
+  stroke: #263238;
 
   stroke-width: 2;
 }
 
 
-/* 音部記号 */
+/* =================================
+   音部記号
+================================= */
 
 #clef-symbol {
   font-family:
@@ -334,18 +384,20 @@ button {
 
   font-size: 92px;
 
-  fill: #333;
+  fill: #263238;
 }
 
 
-/* 音符 */
+/* =================================
+   音符
+================================= */
 
 #note-head {
-  fill: #333;
+  fill: #263238;
 }
 
 #note-stem {
-  stroke: #333;
+  stroke: #263238;
 
   stroke-width: 3;
 }
@@ -361,11 +413,9 @@ button {
     0
     0;
 
-  font-size: 1.2rem;
+  font-size: 20px;
 
-  font-weight: bold;
-
-  color: #555;
+  font-weight: 800;
 }
 
 
@@ -377,92 +427,84 @@ button {
   display: grid;
 
   grid-template-columns:
-    repeat(4, 1fr);
+    1fr
+    1fr;
 
-  gap: 12px;
+  gap: 14px;
 
-  margin:
-    18px
-    0;
-}
-
-.answer-button {
-  min-height: 64px;
-
-  border: 2px solid #d9def2;
-
-  border-radius: 14px;
-
-  background: white;
-
-  color: #333;
-
-  font-size: 1.35rem;
-
-  font-weight: bold;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 3px 7px rgba(0, 0, 0, 0.05);
-
-  transition:
-    transform 0.08s ease;
-}
-
-.answer-button:active {
-  transform: scale(0.96);
-}
-
-.answer-button:disabled {
-  cursor: default;
-  opacity: 1;
-}
-
-
-/* 正解 */
-
-.answer-button.correct {
-  background: #dff5e3;
-
-  border-color: #72c785;
-
-  color: #237b36;
-}
-
-
-/* 不正解 */
-
-.answer-button.wrong {
-  background: #ffe2e2;
-
-  border-color: #e58a8a;
-
-  color: #b33a3a;
+  margin-top: 18px;
 }
 
 
 /* =================================
-   メッセージ
+   回答ボタン本体
+================================= */
+
+.answer-button {
+  min-height: 88px;
+
+  border: 0;
+
+  border-radius: 20px;
+
+  background: white;
+
+  font-size:
+    clamp(30px, 9vw, 48px);
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 0
+    rgba(0, 0, 0, 0.12);
+}
+
+
+/* =================================
+   回答ボタン 押した時
+================================= */
+
+.answer-button:active {
+  transform: translateY(4px);
+
+  box-shadow: none;
+}
+
+
+/* =================================
+   正解
+================================= */
+
+.answer-button.correct {
+  background: #b9efc2;
+}
+
+
+/* =================================
+   不正解
+================================= */
+
+.answer-button.wrong {
+  background: #ffc7c7;
+}
+
+
+/* =================================
+   正解・不正解メッセージ
 ================================= */
 
 .message {
   min-height: 42px;
 
-  margin:
-    6px
-    0
-    10px;
+  text-align: center;
 
-  font-size: 1.2rem;
+  font-size: 24px;
 
-  font-weight: bold;
+  font-weight: 900;
 
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
+  margin-top: 16px;
 }
 
 
@@ -471,100 +513,101 @@ button {
 ================================= */
 
 .next-button {
+  display: block;
+
   width: 100%;
 
-  min-height: 60px;
+  min-height: 64px;
 
-  border: none;
+  margin-top: 10px;
 
-  border-radius: 16px;
+  border: 0;
 
-  background: #e9ecff;
+  border-radius: 18px;
 
-  color: #404a9a;
+  background: #cce8ff;
 
-  font-size: 1.3rem;
+  font-size: 24px;
 
-  font-weight: bold;
+  font-weight: 900;
 
   cursor: pointer;
+
+  box-shadow:
+    0 4px 0
+    rgba(0, 0, 0, 0.12);
 }
 
 .next-button:active {
-  transform: scale(0.98);
+  transform: translateY(3px);
+
+  box-shadow: none;
+}
+
+.next-button.hidden {
+  display: none;
 }
 
 
 /* =================================
-   結果
+   結果カード
 ================================= */
-
-#result {
-  text-align: center;
-}
 
 .result-card {
   background: white;
 
-  border-radius: 22px;
+  border-radius: 28px;
 
   padding:
-    40px
-    24px;
-
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.06);
-}
-
-
-/* アイコン */
-
-.result-icon {
-  font-size: 4rem;
-
-  margin-bottom: 10px;
-}
-
-
-/* タイトル */
-
-.result-card h2 {
-  margin:
-    0
-    0
-    12px;
-
-  font-size: 1.8rem;
-}
-
-
-/* メッセージ */
-
-#result-text {
-  margin:
-    0
-    0
+    34px
     22px;
 
-  font-size: 1.15rem;
+  text-align: center;
 
-  line-height: 1.6;
-}
-
-
-/* 点数 */
-
-.result-score {
-  font-size: 2.5rem;
-
-  font-weight: bold;
-
-  margin-bottom: 28px;
+  box-shadow:
+    0 5px 20px
+    rgba(40, 60, 100, 0.1);
 }
 
 
 /* =================================
-   結果ボタン
+   結果アイコン
+================================= */
+
+.result-icon {
+  font-size: 70px;
+}
+
+
+/* =================================
+   結果タイトル
+================================= */
+
+.result-card h2 {
+  margin:
+    8px
+    0;
+}
+
+
+/* =================================
+   結果スコア
+================================= */
+
+.result-score {
+  font-size: 52px;
+
+  font-weight: 900;
+
+  margin:
+    20px
+    0
+    24px;
+}
+
+
+/* =================================
+   メインボタン
 ================================= */
 
 .main-button,
@@ -573,41 +616,93 @@ button {
 
   width: 100%;
 
-  min-height: 60px;
+  min-height: 64px;
 
-  border-radius: 16px;
+  border: 0;
 
-  font-size: 1.25rem;
-
-  font-weight: bold;
+  border-radius: 18px;
 
   cursor: pointer;
+
+  box-shadow:
+    0 4px 0
+    rgba(0, 0, 0, 0.12);
 }
 
+
+/* =================================
+   もういちど
+================================= */
 
 .main-button {
-  border: none;
+  background: #cce8ff;
 
-  background: #e9ecff;
+  font-size: 24px;
 
-  color: #404a9a;
-
-  margin-bottom: 12px;
+  font-weight: 900;
 }
 
+
+/* =================================
+   メニューへ
+================================= */
 
 .secondary-button {
-  border: 2px solid #d9def2;
+  margin-top: 14px;
 
-  background: white;
+  background: #eeeeee;
 
-  color: #555;
+  font-size: 20px;
+
+  font-weight: 800;
 }
 
+
+/* =================================
+   ボタン共通の押した時
+================================= */
 
 .main-button:active,
 .secondary-button:active {
-  transform: scale(0.98);
+  transform: translateY(3px);
+
+  box-shadow: none;
+}
+
+
+/* =================================
+   アニメーション
+================================= */
+
+@keyframes appear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+/* =================================
+   タブレット・大きな画面
+================================= */
+
+@media (min-width: 600px) {
+
+  .app {
+    padding-top: 28px;
+  }
+
 }
 
 
@@ -619,61 +714,85 @@ button {
 
   .app {
     padding:
-      18px
       14px
-      30px;
+      12px
+      28px;
   }
 
 
-  #menu h1 {
-    font-size: 1.8rem;
+  header {
+    padding-bottom: 14px;
   }
 
 
-  #menu header p {
-    font-size: 1rem;
+  h1 {
+    font-size: 32px;
+  }
+
+
+  header p {
+    font-size: 16px;
+  }
+
+
+  .clef-section {
+    padding: 16px;
+
+    border-radius: 20px;
   }
 
 
   .clef-section h2 {
-    font-size: 1.35rem;
+    font-size: 21px;
   }
 
 
   .clef-button {
-    min-height: 78px;
+    min-height: 72px;
 
-    border-radius: 16px;
+    gap: 14px;
   }
 
 
   .clef-symbol {
-    font-size: 3rem;
+    font-size: 42px;
   }
 
 
   .clef-level {
-    font-size: 1.2rem;
+    font-size: 22px;
   }
 
 
   .question-card {
     padding:
-      16px
-      8px
-      18px;
+      18px
+      6px
+      22px;
+
+    border-radius: 24px;
+  }
+
+
+  #clef-title {
+    font-size: 22px;
   }
 
 
   .answers {
-    gap: 9px;
+    gap: 12px;
   }
 
 
   .answer-button {
-    min-height: 58px;
+    min-height: 82px;
 
-    font-size: 1.2rem;
+    font-size: 32px;
+  }
+
+
+  .message {
+    font-size: 21px;
   }
 
 }
@@ -685,9 +804,25 @@ button {
 
 @media (max-width: 360px) {
 
-  .answers {
-    grid-template-columns:
-      repeat(2, 1fr);
+  .clef-button {
+    gap: 10px;
+  }
+
+
+  .clef-symbol {
+    font-size: 38px;
+  }
+
+
+  .clef-level {
+    font-size: 20px;
+  }
+
+
+  .answer-button {
+    min-height: 76px;
+
+    font-size: 29px;
   }
 
 }
